@@ -1,0 +1,199 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>binutils module &#8212; VOLA 1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-binutils">
+<span id="binutils-module"></span><h1>binutils module<a class="headerlink" href="#module-binutils" title="Permalink to this headline">¶</a></h1>
+<p>Binary Utilities Class.</p>
+<p>Selection of utility functions for binary operations and other handy functions.</p>
+<dl class="function">
+<dt id="binutils.count_bits">
+<code class="descclassname">binutils.</code><code class="descname">count_bits</code><span class="sig-paren">(</span><em>vol</em><span class="sig-paren">)</span><a class="headerlink" href="#binutils.count_bits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Count all bits set to 1.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="binutils.count_neighbours">
+<code class="descclassname">binutils.</code><code class="descname">count_neighbours</code><span class="sig-paren">(</span><em>target</em>, <em>mask</em><span class="sig-paren">)</span><a class="headerlink" href="#binutils.count_neighbours" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use a mask to calculate the bit occupancy of the surrounding pixels.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="binutils.flip_bit">
+<code class="descclassname">binutils.</code><code class="descname">flip_bit</code><span class="sig-paren">(</span><em>bit64</em>, <em>index</em><span class="sig-paren">)</span><a class="headerlink" href="#binutils.flip_bit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set bit index on 64 bit unsigned integer to opposite of what it was.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="binutils.get_byte_array">
+<code class="descclassname">binutils.</code><code class="descname">get_byte_array</code><span class="sig-paren">(</span><em>intval</em><span class="sig-paren">)</span><a class="headerlink" href="#binutils.get_byte_array" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate byte array from numpy integer.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="binutils.get_indexes">
+<code class="descclassname">binutils.</code><code class="descname">get_indexes</code><span class="sig-paren">(</span><em>vol</em><span class="sig-paren">)</span><a class="headerlink" href="#binutils.get_indexes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all the indices in a given vol.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="binutils.normalize">
+<code class="descclassname">binutils.</code><code class="descname">normalize</code><span class="sig-paren">(</span><em>val</em>, <em>minval</em>, <em>maxval</em><span class="sig-paren">)</span><a class="headerlink" href="#binutils.normalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scale a value between 0 and 1.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="binutils.parser_args">
+<code class="descclassname">binutils.</code><code class="descname">parser_args</code><span class="sig-paren">(</span><em>wildcards</em><span class="sig-paren">)</span><a class="headerlink" href="#binutils.parser_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default parser arguments, all in one handy place.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="binutils.print_binary">
+<code class="descclassname">binutils.</code><code class="descname">print_binary</code><span class="sig-paren">(</span><em>np64</em><span class="sig-paren">)</span><a class="headerlink" href="#binutils.print_binary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print as string with all the zeros.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="binutils.read_bit">
+<code class="descclassname">binutils.</code><code class="descname">read_bit</code><span class="sig-paren">(</span><em>bit64</em>, <em>index</em><span class="sig-paren">)</span><a class="headerlink" href="#binutils.read_bit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pull the value at bit index.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="binutils.set_bit">
+<code class="descclassname">binutils.</code><code class="descname">set_bit</code><span class="sig-paren">(</span><em>bit64</em>, <em>index</em><span class="sig-paren">)</span><a class="headerlink" href="#binutils.set_bit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set bit index on 64 bit unsigned integer to one.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="binutils.sparse_indexes">
+<code class="descclassname">binutils.</code><code class="descname">sparse_indexes</code><span class="sig-paren">(</span><em>coord</em>, <em>depth</em><span class="sig-paren">)</span><a class="headerlink" href="#binutils.sparse_indexes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate sparse indexes from coordinate.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="binutils.timer">
+<code class="descclassname">binutils.</code><code class="descname">timer</code><span class="sig-paren">(</span><em>starttime=None</em><span class="sig-paren">)</span><a class="headerlink" href="#binutils.timer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate timing information in h,m,s format.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="binutils.unset_bit">
+<code class="descclassname">binutils.</code><code class="descname">unset_bit</code><span class="sig-paren">(</span><em>bit64</em>, <em>index</em><span class="sig-paren">)</span><a class="headerlink" href="#binutils.unset_bit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set bit index on 64 bit unsigned integer to zero.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="binutils.xyz_from_sparse_index">
+<code class="descclassname">binutils.</code><code class="descname">xyz_from_sparse_index</code><span class="sig-paren">(</span><em>indexes</em><span class="sig-paren">)</span><a class="headerlink" href="#binutils.xyz_from_sparse_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate coordinates from sparse index.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">VOLA</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="las2vola.html">las2vola module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="xyz2vola.html">xyz2vola module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stl2vola.html">stl2vola module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="binvox2vola.html">binvox2vola module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kitti2vola.html">kitti2vola module</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="volareader.html">volareader module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="volaviewer.html">volaviewer module</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jonathan Byrne.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/binutils.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

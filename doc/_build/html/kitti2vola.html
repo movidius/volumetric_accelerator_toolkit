@@ -1,0 +1,149 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>kitti2vola module &#8212; VOLA 1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="volareader module" href="volareader.html" />
+    <link rel="prev" title="binvox2vola module" href="binvox2vola.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="kitti2vola-module">
+<h1>kitti2vola module<a class="headerlink" href="#kitti2vola-module" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-text"><div class="highlight"><pre>usage: kitti2vola.py [-h] [--crs CRS] [-n] [-d] input depth
+
+positional arguments:
+  input        the name of the file / files / directory you want to open. You
+               can used wildcards(*.bin) or the directory for multiple files
+  depth        how many levels the vola tree will use
+
+optional arguments:
+  -h, --help   show this help message and exit
+  --crs CRS    the coordinate system of the input, e.g., 29902 (irish grid
+               epsg code)
+  -n, --nbits  use 1+nbits per voxel. The parser works out what info to embed
+  -d, --dense  output a dense point cloud
+</pre></div>
+</div>
+<span class="target" id="module-kitti2vola"></span><p>Converts bin files from the kitti dataset into VOLA format.</p>
+<p>Kitti is a LIDAR dataset for automotive testing. The dataset
+stores an intensity value which is converted to a greyscale
+color for nbits VOLA.</p>
+<p>&#64;author: Ananya Gupta and Jonathan Byrne</p>
+<dl class="function">
+<dt id="kitti2vola.main">
+<code class="descclassname">kitti2vola.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#kitti2vola.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read the file, build the tree. Write a Binary.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="kitti2vola.parse_bin">
+<code class="descclassname">kitti2vola.</code><code class="descname">parse_bin</code><span class="sig-paren">(</span><em>filename</em>, <em>nbits</em><span class="sig-paren">)</span><a class="headerlink" href="#kitti2vola.parse_bin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read in float values and reshape to 2d numpy array.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">VOLA</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="las2vola.html">las2vola module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="xyz2vola.html">xyz2vola module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stl2vola.html">stl2vola module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="binvox2vola.html">binvox2vola module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">kitti2vola module</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="volareader.html">volareader module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="volaviewer.html">volaviewer module</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="binvox2vola.html" title="previous chapter">binvox2vola module</a></li>
+      <li>Next: <a href="volareader.html" title="next chapter">volareader module</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jonathan Byrne.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/kitti2vola.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,165 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>volatree module &#8212; VOLA 1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-volatree">
+<span id="volatree-module"></span><h1>volatree module<a class="headerlink" href="#module-volatree" title="Permalink to this headline">¶</a></h1>
+<p>The VOLA tree for generating sparse VOLA files.</p>
+<p>&#64;author Jonathan Byrne</p>
+<dl class="class">
+<dt id="volatree.VolaTree">
+<em class="property">class </em><code class="descclassname">volatree.</code><code class="descname">VolaTree</code><span class="sig-paren">(</span><em>max_depth</em>, <em>bbox</em>, <em>crs</em>, <em>dense</em>, <em>nbits</em><span class="sig-paren">)</span><a class="headerlink" href="#volatree.VolaTree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>VOLA tree representation.</p>
+<dl class="method">
+<dt id="volatree.VolaTree.countlevels">
+<code class="descname">countlevels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#volatree.VolaTree.countlevels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Measure all the pixels in the tree.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="volatree.VolaTree.cubify">
+<code class="descname">cubify</code><span class="sig-paren">(</span><em>points</em>, <em>pointsdata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#volatree.VolaTree.cubify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Split the point cloud into integer voxel coordinates.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="volatree.VolaTree.set_sparse">
+<code class="descname">set_sparse</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em>, <em>nbits</em><span class="sig-paren">)</span><a class="headerlink" href="#volatree.VolaTree.set_sparse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sparse structure for vola tree.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="volatree.VolaTree.setlevel">
+<code class="descname">setlevel</code><span class="sig-paren">(</span><em>i</em>, <em>coord</em>, <em>twobits</em><span class="sig-paren">)</span><a class="headerlink" href="#volatree.VolaTree.setlevel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setting occupancy bit and secondary data (twobits) on a given level.</p>
+<p>It implements the dense tree and uses a global linear mapping.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="volatree.VolaTree.setvoxel">
+<code class="descname">setvoxel</code><span class="sig-paren">(</span><em>coords</em>, <em>vals</em><span class="sig-paren">)</span><a class="headerlink" href="#volatree.VolaTree.setvoxel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set bit to 1 for different levels.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="volatree.VolaTree.wgs84_position">
+<code class="descname">wgs84_position</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#volatree.VolaTree.wgs84_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>The lat/ lon coordinates of the centroid of the volume.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="volatree.VolaTree.writebin">
+<code class="descname">writebin</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#volatree.VolaTree.writebin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Output binary levels, Header information.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">VOLA</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="las2vola.html">las2vola module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="xyz2vola.html">xyz2vola module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stl2vola.html">stl2vola module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="binvox2vola.html">binvox2vola module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kitti2vola.html">kitti2vola module</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="volareader.html">volareader module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="volaviewer.html">volaviewer module</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jonathan Byrne.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/volatree.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
