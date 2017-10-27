@@ -1,7 +1,0 @@
-binutils module
-===============
-
-.. automodule:: binutils
-    :members:
-    :undoc-members:
-    :show-inheritance:
