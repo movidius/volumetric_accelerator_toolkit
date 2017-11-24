@@ -10,6 +10,7 @@ import argparse
 import os
 import numpy as np
 import binutils as bu
+import random
 from volatree import VolaTree
 
 
@@ -60,6 +61,12 @@ def main():
         type=int,
         default=0)
 
+    parser.add_argument(
+        "-n",
+        "--numpy",
+        help="output the occupancy grid to a numpy array",
+        action='store_true')
+
     args = parser.parse_args()
     header, levels, data = open_file(args.vol)
     voxels, voxel_data = get_voxels(header, levels, data)
@@ -80,6 +87,10 @@ def main():
     if args.map > 0:
         print("generating 2D map")
         generate_map(voxels, header, args.map)
+
+    if args.numpy:
+        print("generating Numpy Grid")
+        numpy_grid(voxels, header)
 
     if args.bincoords:
         bin_coordinates = get_binary_indexes(voxels)
@@ -158,7 +169,8 @@ def get_voxels(header, levels, data):
     """Generate a set of xyz position in the bounding box of the VOLA data."""
     depth = header['depth']
     indexes = get_all_indexes(levels, depth)
-    indexes, dataindexes = traverse_indexes([], indexes, depth-1, [0] * depth)
+    indexes, dataindexes = traverse_indexes(
+        [], indexes, depth - 1, [0] * depth)
 
     voxels = []
     voxel_data = []
@@ -168,7 +180,7 @@ def get_voxels(header, levels, data):
     if header['nbits'] > 0:
         # we could do this for each level but only care about the bottom
         for dindex in dataindexes:
-            voxel_data.append(data[depth-1][dindex[-1]])
+            voxel_data.append(data[depth - 1][dindex[-1]])
 
     return voxels, voxel_data
 
@@ -181,10 +193,10 @@ def get_coords(header, voxels):
     else:
         coordinates = []
         for vox in voxels:
-            normed = [float(x)/(header['sidelength']) for x in vox]
-            scaled = [x*max(header['diff']) for x in normed]
+            normed = [float(x) / (header['sidelength']) for x in vox]
+            scaled = [x * max(header['diff']) for x in normed]
 
-            coord = [x+y for x, y in zip(scaled, header['offset'])]
+            coord = [x + y for x, y in zip(scaled, header['offset'])]
             coordinates.append(coord)
         return coordinates
 
@@ -205,7 +217,7 @@ def get_voxel(coord, header, levels):
         else:
             blockindexes.append(blockidx)
             nextblockidx = -1
-            maskstr = '1' * (indexes[d]+1)
+            maskstr = '1' * (indexes[d] + 1)
             mask = np.uint(int(maskstr, 2))
             block = block & mask
             block = np.uint64(block)
@@ -267,7 +279,7 @@ def traverse_indexes(prev, levels, depth, levelcnt):
         for index in block:
             lowerlist = prev + [index]
             result, dindex = traverse_indexes(lowerlist, levels[1:],
-                                              depth-1, levelcnt)
+                                              depth - 1, levelcnt)
 
             traversed.extend(result)
             dataindexes.extend(dindex)
@@ -325,13 +337,48 @@ def generate_map(coordinates, header, start_height):
     write_pgm(filename, bitmap)
 
 
+def numpy_grid(coordinates, header):
+    """For a given starting height, compress the maps to a plane."""
+    datadir = "./dataset/"
+    basename = os.path.basename(
+        header['filename']).replace(
+        '.vol',
+        'heighttrain.npy')
+    filename = datadir + basename
+    if not os.path.exists(datadir):
+        os.makedirs(datadir)
+
+    depth = header['depth']
+    sidelen = pow(4, depth)
+    level = np.zeros((sidelen, sidelen, sidelen))
+    sumlevel = np.zeros((sidelen, sidelen, sidelen))
+
+    for coord in coordinates:
+        sumlevel[coord] = 1
+
+    bitmap = np.sum(sumlevel, axis=2)
+
+    for coord in coordinates:
+        # Randomly deleting voxels, bias for height
+        # x, y, z = coord
+        # zfactor = z / 10
+        # if zfactor < 1:
+        #     zfactor = 1
+        #
+        # likelihood = 0.0001 + ((0.1 * bitmap[x][y]) / zfactor)
+        #
+        # if random.random() > likelihood:
+        level[coord] = 1
+    np.save(filename, level)
+
+
 def slice_layers(coordinates, header):
     """Slice the 3D model into image planes."""
     imagedir = "./images/"
     if not os.path.exists(imagedir):
         os.makedirs(imagedir)
 
-    for depth in range(1, header['depth']+1):
+    for depth in range(1, header['depth'] + 1):
         bitshift = 2 * (header['depth'] - depth)
         sidelen = pow(4, depth)
         level = np.zeros((sidelen, sidelen, sidelen))

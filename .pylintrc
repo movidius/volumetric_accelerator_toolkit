@@ -1,0 +1,23 @@
+[TYPECHECK]
+ignored-modules = numpy, liblas, pyproj, stl, vtk
+[MASTER]
+ignore=TensorFlow
+
+init-hook='import sys; sys.path.append("/usr/local/lib/python3.5/dist-packages")'
+
+# Good variable names which should always be accepted, separated by a comma
+good-names=x,y,z,i,j,k,r,g,b,h,m,s,f
+
+[SIMILARITIES]
+
+# Minimum lines number of a similarity.
+min-similarity-lines=4
+
+# Ignore comments when computing similarities.
+ignore-comments=yes
+
+# Ignore docstrings when computing similarities.
+ignore-docstrings=yes
+
+# Ignore imports when computing similarities.
+ignore-imports=yes

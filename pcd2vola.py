@@ -40,18 +40,18 @@ def main():
         print("converting", filename, "to", outfilename)
         bbox, points, pointsdata = parse_pcd(filename, args.nbits)
         # work out how many chunks are required for the data
-        if args.nbits:
-            div, mod = divmod(len(pointsdata[0]), 8)
-            if mod > 0:
-                nbits = div + 1
-            else:
-                nbits = div
-        else:
-            nbits = 0
+        # if args.nbits:
+        #     div, mod = divmod(len(pointsdata[0]), 8)
+        #     if mod > 0:
+        #         nbits = div + 1
+        #     else:
+        #         nbits = div
+        # else:
+        #     nbits = 0
 
         if len(points) > 0:
             volatree = VolaTree(args.depth, bbox, args.crs,
-                                args.dense, nbits)
+                                args.dense, 0)
             volatree.cubify(points, pointsdata)
             volatree.countlevels()
             volatree.writebin(outfilename)

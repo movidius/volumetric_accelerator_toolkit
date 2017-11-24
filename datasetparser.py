@@ -28,7 +28,7 @@ def main():
 
     filenames = glob.glob(vol)
     hdr = {}
-    for idx, filename in enumerate(filenames):
+    for filename in filenames:
         with open(filename, "rb") as f:
             hdr['headersize'] = struct.unpack('I', f.read(4))[0]
             hdr['version'] = struct.unpack('H', f.read(2))[0]
@@ -84,7 +84,7 @@ def main():
                 exit()
 
     vola = {}
-    print("DEPTH!", hdr['depth'])
+    print("Depth:", hdr['depth'])
     vola['dataset'] = infodata['dataset']
     vola['info'] = infodata['info']
     vola['url'] = infodata['url']

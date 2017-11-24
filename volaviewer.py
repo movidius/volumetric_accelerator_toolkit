@@ -6,10 +6,10 @@ multiple tiles. Uses the VOLA reader and the .vola format for multiple tiles
 @author Jonathan Byrne
 """
 from __future__ import print_function
+import json
+import struct
 import vtk
 import volareader as vr
-import struct
-import json
 
 
 def main():
@@ -58,7 +58,7 @@ def read_vola(filename, renderer):
                 bytevals = [b for b in bytestr]
                 colors.append([bytevals[0], bytevals[1], bytevals[2]])
         else:
-            for coord in coords:
+            for _ in coords:
                 colors.append([200, 200, 200])
         add_voxels(coords, colors, renderer, header['cubesize'])
 
@@ -75,7 +75,7 @@ def read_vol(filename, renderer):
             bytevals = [b for b in bytestr]
             colors.append([bytevals[0], bytevals[1], bytevals[2]])
     else:
-        for coord in coords:
+        for _ in coords:
             colors.append([200, 200, 200])
     add_voxels(coords, colors, renderer, 1)
 

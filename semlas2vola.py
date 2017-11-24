@@ -67,13 +67,14 @@ def main():
             print("The las file is empty!")
     bu.timer(start_time)
 
+
 def max_bb(bbox):
     difference = [i - j for i, j in zip(bbox[1], bbox[0])]
     maxidx = difference.index(max(difference))
     bbox[1][maxidx] = bbox[0][maxidx] + 400
     return bbox
 
-    
+
 def parse_las(filename, nbits):
     """Read las format point data and return header and points."""
     pointfile = lasfile.File(filename, mode='r')

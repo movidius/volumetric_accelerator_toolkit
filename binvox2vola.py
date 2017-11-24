@@ -117,8 +117,8 @@ def runlength_to_xyz(bytevals, header):
         occupied_voxels.extend(range(start, end))
     occupied_voxels = np.array(occupied_voxels)
 
-    x = occupied_voxels / (header['dims'][0]*header['dims'][1])
-    zwpy = occupied_voxels % (header['dims'][0]*header['dims'][1])  # z*w + y
+    x = occupied_voxels / (header['dims'][0] * header['dims'][1])
+    zwpy = occupied_voxels % (header['dims'][0] * header['dims'][1])  # z*w + y
     z = zwpy / header['dims'][0]
     y = zwpy % header['dims'][0]
     points = np.vstack((x, y, z)).T

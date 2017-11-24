@@ -5,9 +5,9 @@ based on very old code
 ."""
 from __future__ import print_function
 from collections import namedtuple
+import sys
 import glob
 import pyproj
-import sys
 from volatree import VolaTree
 
 
@@ -58,7 +58,7 @@ def parse_grid_data(filename, header, lasout=False):
     minz = float("inf")
     maxz = float("-inf")
     linecnt = 0
-    Point = namedtuple('Point', 'x y z')
+    point = namedtuple('Point', 'x y z')
     minx = header['min'][0]
     miny = header['min'][1]
     csize = header['cellsize']
@@ -94,7 +94,7 @@ def parse_grid_data(filename, header, lasout=False):
                 outfile.write(
                     str(transform[0]) + ' ' + str(transform[1]) + ' ' + str(z)
                     + '\n')
-            data.append(Point(x=transform[0], y=transform[1], z=z))
+            data.append(point(x=transform[0], y=transform[1], z=z))
 
     reproj = pyproj.transform(wgs84, itm, header['min'][0], header['min'][1])
     header['min'][0] = reproj[0]

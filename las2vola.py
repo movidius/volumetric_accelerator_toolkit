@@ -86,6 +86,8 @@ def parse_las(filename, nbits):
             if red == green == blue == 0:
                 red = green = blue = 200
             pointsdata[idx] = [red, green, blue, hval, rval, ival, cval]
+    if len(points) == 0:
+        return [], [], None
 
     bbox = [points.min(axis=0).tolist(), points.max(axis=0).tolist()]
 
