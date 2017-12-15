@@ -42,8 +42,8 @@ def main():
         print("converting", filename, "to", outfilename)
         bbox, points = parse_stl(filename)
 
-        if args.nbits:
-            print("stl only has occupancy data!")
+        print("STL only has occupancy data," +
+              " no additional data is being added")
         nbits = 0
 
         volatree = VolaTree(args.depth, bbox, args.crs, args.dense, nbits)

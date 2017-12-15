@@ -39,15 +39,8 @@ def main():
 
         print("converting", filename, "to", outfilename)
         bbox, points, pointsdata = parse_pcd(filename, args.nbits)
-        # work out how many chunks are required for the data
-        # if args.nbits:
-        #     div, mod = divmod(len(pointsdata[0]), 8)
-        #     if mod > 0:
-        #         nbits = div + 1
-        #     else:
-        #         nbits = div
-        # else:
-        #     nbits = 0
+        print("PCD only has occupancy data," +
+              " no additional data is being added")
 
         if len(points) > 0:
             volatree = VolaTree(args.depth, bbox, args.crs,

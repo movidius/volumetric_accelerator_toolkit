@@ -42,12 +42,14 @@ def main():
         bbox, points, pointsdata = parse_xyz(filename, args.nbits)
         # work out how many chunks are required for the data
         if args.nbits:
+            print("nbits set, adding metadata to occupancy grid")
             div, mod = divmod(len(pointsdata[0]), 8)
             if mod > 0:
                 nbits = div + 1
             else:
                 nbits = div
         else:
+            print("Only occupancy data being set! Use -n flag to add metadata")
             nbits = 0
 
         if len(points) > 0:

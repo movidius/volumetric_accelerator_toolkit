@@ -44,14 +44,9 @@ def main():
         bbox, points, pointsdata = parse_ply(filename, args.nbits)
 
         # work out how many chunks are required for the data
-        if args.nbits:
-            div, mod = divmod(len(pointsdata[0]), 8)
-            if mod > 0:
-                nbits = div + 1
-            else:
-                nbits = div
-        else:
-            nbits = 0
+        print("PLY only has occupancy data," +
+              " no additional data is being added")
+        nbits = 0
 
         volatree = VolaTree(args.depth, bbox, args.crs, args.dense, nbits)
         volatree.cubify(points)
@@ -66,19 +61,14 @@ def parse_ply(filename, nbits):
     ply_file = plyfile.PlyData.read(filename)
     vertices = ply_file.elements[0].data
     coords = np.zeros((len(vertices), 3), dtype=np.float)
-    # data = np.zeros(len(vertices))
 
     for idx, vert in enumerate(vertices):
         coords[idx] = list(vert)[:3]
-    #    data[idx] = list(vert)[3:]
 
     minvals = coords.min(axis=0).tolist()
     maxvals = coords.max(axis=0).tolist()
     bbox = [minvals, maxvals]
 
-    # if nbits > 0:
-#        return bbox, coords, data
-#    else:
     return bbox, coords, None
 
 

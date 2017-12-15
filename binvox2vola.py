@@ -45,8 +45,8 @@ def main():
         print("converting", filename, "to", outfilename)
         bbox, points, pointsdata = parse_binvox(filename)
 
-        if args.nbits:
-            print("binvox only has occupancy data!")
+        print("binvox only has occupancy data," +
+              " no additional data is being added")
         nbits = 0
 
         if len(points) > 0:
