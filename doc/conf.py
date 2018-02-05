@@ -32,7 +32,7 @@
 # ones.
 import sys
 
-sys.path.insert(0,'/home/jonathan/code/vola/VOLA/vola_api')
+sys.path.insert(0,'../')
 
 extensions = ['sphinx.ext.autodoc', 'sphinxcontrib.programoutput']
 # Add any paths that contain templates here, relative to this directory.
@@ -49,7 +49,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'VOLA'
-copyright = u'2017, Jonathan Byrne'
+copyright = u'2017, Intel LTD'
 author = u'Jonathan Byrne'
 
 # The version info for the project you're documenting, acts as replacement for
