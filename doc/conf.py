@@ -49,9 +49,10 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'VOLA'
-copyright = u'2017, Intel LTD'
+copyright = u'2017, Intel Ltd'
 author = u'Jonathan Byrne'
-
+html_logo = './intel.png'
+latex_logo = './intel.png'
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
