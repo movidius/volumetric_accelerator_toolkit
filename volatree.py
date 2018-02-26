@@ -130,13 +130,34 @@ class VolaTree(object):
             used = 0
             occupied = 0
             unoccupied = 0
-            for elem in level:
-                if elem == 0:
-                    empty += 1
-                else:
-                    used += 1
-                    occupied += bin(elem).count("1")
-                    unoccupied += 64 - bin(elem).count("1")
+
+            elements = np.array(level) # count all used cubes
+            nz = np.count_nonzero(elements)
+            used += nz
+            empty += elements.size - nz
+
+            # count all occupied bits - define set of uint8s to work with numpy
+            dt = np.dtype((np.uint64, {'0':(np.uint8, 0), '1':(np.uint8, 1),
+                '2':(np.uint8, 2), '3':(np.uint8, 3), '4':(np.uint8, 4),
+                '5':(np.uint8, 5), '6':(np.uint8, 6), '7':(np.uint8, 7)}))
+            bn = elements.view(dtype = dt)
+
+            # concat uint8s for easiness
+            total_bin = np.concatenate([bn['0'], bn['1'], bn['2'], bn['3'],
+                bn['4'], bn['5'], bn['6'], bn['7']])
+
+            # unpack and count bits
+            level_occupied = np.count_nonzero(np.unpackbits(total_bin))
+            occupied += level_occupied
+            unoccupied += 64 * nz - level_occupied
+
+#            for elem in level:
+#                if elem == 0:
+#                    empty += 1
+#                else:
+#                    used += 1
+#                    occupied += bin(elem).count("1")
+#                    unoccupied += 64 - bin(elem).count("1")
             print("level", idx, "empty", empty, "used", used, "occupied",
                   occupied, "unoccupied", unoccupied)
 
