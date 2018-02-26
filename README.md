@@ -16,28 +16,28 @@ There are some packages that need to be installed in order to leverage all of th
 
 apt:
 
-'''
+```
 python3.5
 liblas
 libatlas-base-dev
-'''
+```
 
 pip3:
 
-'''
+```
 numpy
 numpy-stl
 pyproj
 vtk
 sphinxcontrib-programoutput
-'''
+```
 
 ## How to use
 
 ### Converting to .vol
 
 There are a variety of formats from which you can convert into vola. Currently supported are:
-'''
+```
 binvox
 dem
 kitty
@@ -50,26 +50,26 @@ semlas
 stl
 txt
 xyz
-'''
+```
 
 To convert any of these formats, a generic command may be used:
-'''
+```
 python3.5 *2vola.py vola_depth
-'''
+```
 
 Where * replaces any supported format, e.g. las2vola.py
 Additionally, there are several extra arguments:
-'''
+```
 --crs [code] (the epsg coordinate system of the input)
 --nbits, -n (tell the parser to use 1+nbits per voxel to automatically add provided info to vola format, e.g. colour information)
 --dense, -d (to output a dense point cloud)
-'''
+```
 
 ### Obtaining information from the .vol file
 
 After converting, you should be left with a relatively small .vol file.
 This may be examined in several different ways. volareader.py will output various information depending on the arguments given.
-'''
+```
 python3.5 volareader.py vola_file.vol
 	--voxels, -v (outputs the voxel positions within the VOLA bounds)
 	--coordinates, -c (outputs the coordinates of the voxels within given coordinate system)
@@ -78,15 +78,15 @@ python3.5 volareader.py vola_file.vol
 	--images, -i (outputs the image planes for each depth as .pgm files)
 	--map, -m [height] (outputs flattened map for given height as .pgm)
 	--numpy, -n (outputs the occupancy grid to a numpy array)
-'''
+```
 
 ### Visualising results
 
 Using the vtk module, we can visualise the vola file
 
-'''
+```
 python3.5 volaviewer.py vola_file.vol
-'''
+```
 
 The argument '-ply' may also be added to output the vola representation to a .ply.
 
