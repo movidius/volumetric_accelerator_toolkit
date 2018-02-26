@@ -38,19 +38,14 @@ class VolaTree(object):
         """Split the point cloud into integer voxel coordinates."""
         uniquecubes = {}
         maxlen = max(self.difference)
-        bmin = self.bbox[0]
+        bmin = np.array(self.bbox[0])
 
-        for idx, point in enumerate(points):
-            normx = bu.normalize(point[0], bmin[0], bmin[0] + maxlen)
-            normy = bu.normalize(point[1], bmin[1], bmin[1] + maxlen)
-            normz = bu.normalize(point[2], bmin[2], bmin[2] + maxlen)
-            cubex = int(round((self.sidedivisions - 1) * normx))
-            cubey = int(round((self.sidedivisions - 1) * normy))
-            cubez = int(round((self.sidedivisions - 1) * normz))
-            key = (cubex, cubey, cubez)
+        norms = bu.normalize_np(points, bmin, bmin + maxlen)
+        keys = np.int_(np.around((self.sidedivisions - 1) * norms))
 
+        for id, key in enumerate(map(tuple, keys)):
             if isinstance(pointsdata, np.ndarray):
-                uniquecubes[key] = pointsdata[idx]
+                uniquecubes[key] = pointsdata[id]
             else:
                 uniquecubes[key] = [255, 255, 255, 255, 255, 255, 255]
 
