@@ -151,13 +151,6 @@ class VolaTree(object):
             occupied += level_occupied
             unoccupied += 64 * nz - level_occupied
 
-#            for elem in level:
-#                if elem == 0:
-#                    empty += 1
-#                else:
-#                    used += 1
-#                    occupied += bin(elem).count("1")
-#                    unoccupied += 64 - bin(elem).count("1")
             print("level", idx, "empty", empty, "used", used, "occupied",
                   occupied, "unoccupied", unoccupied)
 
