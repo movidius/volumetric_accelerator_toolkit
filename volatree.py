@@ -38,17 +38,13 @@ class VolaTree(object):
         """Split the point cloud into integer voxel coordinates."""
         uniquecubes = {}
         maxlen = max(self.difference)
-        bmin = self.bbox[0]
+        bmin = np.array(self.bbox[0])
 
-        for idx, point in enumerate(points):
-            normx = bu.normalize(point[0], bmin[0], bmin[0] + maxlen)
-            normy = bu.normalize(point[1], bmin[1], bmin[1] + maxlen)
-            normz = bu.normalize(point[2], bmin[2], bmin[2] + maxlen)
-            cubex = int(round((self.sidedivisions - 1) * normx))
-            cubey = int(round((self.sidedivisions - 1) * normy))
-            cubez = int(round((self.sidedivisions - 1) * normz))
-            key = (cubex, cubey, cubez)
+        norms = bu.normalize_np(points, bmin, bmin + maxlen)
+        keys = np.int_(np.around((self.sidedivisions - 1) * norms))
 
+        # use idx to not conflict with inbuilt id()
+        for idx, key in enumerate(map(tuple, keys)):
             if isinstance(pointsdata, np.ndarray):
                 uniquecubes[key] = pointsdata[idx]
             else:
@@ -135,13 +131,27 @@ class VolaTree(object):
             used = 0
             occupied = 0
             unoccupied = 0
-            for elem in level:
-                if elem == 0:
-                    empty += 1
-                else:
-                    used += 1
-                    occupied += bin(elem).count("1")
-                    unoccupied += 64 - bin(elem).count("1")
+
+            elements = np.array(level) # count all used cubes
+            nz = np.count_nonzero(elements)
+            used += nz
+            empty += elements.size - nz
+
+            # count all occupied bits - define set of uint8s to work with numpy
+            dt = np.dtype((np.uint64, {'0':(np.uint8, 0), '1':(np.uint8, 1),
+                '2':(np.uint8, 2), '3':(np.uint8, 3), '4':(np.uint8, 4),
+                '5':(np.uint8, 5), '6':(np.uint8, 6), '7':(np.uint8, 7)}))
+            bn = elements.view(dtype = dt)
+
+            # concat uint8s for easiness
+            total_bin = np.concatenate([bn['0'], bn['1'], bn['2'], bn['3'],
+                bn['4'], bn['5'], bn['6'], bn['7']])
+
+            # unpack and count bits
+            level_occupied = np.count_nonzero(np.unpackbits(total_bin))
+            occupied += level_occupied
+            unoccupied += 64 * nz - level_occupied
+
             print("level", idx, "empty", empty, "used", used, "occupied",
                   occupied, "unoccupied", unoccupied)
 
