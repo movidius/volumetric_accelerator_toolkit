@@ -5,14 +5,14 @@ reader (volareader.py) that allows the structure to be queried and output as
 images or voxel maps. There is also a viewer (volaviewer.py) that allows
 individual or multiple volumes to be viewed.
 
-## Installing
+## Installation
 
 Obtaining the required packages from apt or pip is the only installation necessary.
-After that point, simply cloning the api is will have completed the installation.
+After that point, simply cloning the api will have completed the installation.
 
 ### Dependencies
 
-There are some packages that need to be installed in order to leverage all of the functionality included.
+There are some packages that must be installed to leverage all of the functionality included.
 
 apt:
 
@@ -61,7 +61,8 @@ Where * replaces any supported format, e.g. las2vola.py
 Additionally, there are several extra arguments:
 ```
 --crs [code] (the epsg coordinate system of the input)
---nbits, -n (tell the parser to use 1+nbits per voxel to automatically add provided info to vola format, e.g. colour information)
+--nbits, -n (tell the parser to use 1+nbits per voxel to automatically 
+	add provided info to vola format, e.g. colour information)
 --dense, -d (to output a dense point cloud)
 ```
 
@@ -90,7 +91,7 @@ python3.5 volaviewer.py vola_file.vol
 
 The argument '-ply' may also be added to output the vola representation to a .ply.
 
-To generate more detailed documentation please go to the doc folder and run:
+To generate more detailed documentation per file please go to the doc folder and run:
 make html
 or
 make pdflatex
