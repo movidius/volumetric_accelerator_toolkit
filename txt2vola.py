@@ -10,7 +10,6 @@ x, y, z, intensity, r, g, b, classification
 
 from __future__ import print_function
 import glob
-import re
 import os
 import numpy as np
 import binutils as bu
@@ -33,9 +32,9 @@ def main():
     print("processing: ", ' '.join(filenames))
     for filename in filenames:
         if args.dense:
-            outfilename = re.sub("(?i)txt", "dvol", filename)
+            outfilename = bu.sub(filename, "dvol")
         else:
-            outfilename = re.sub("(?i)txt", "vol", filename)
+            outfilename = bu.sub(filename, "vol")
         if os.path.isfile(outfilename):
             print("File already exists!")
             continue

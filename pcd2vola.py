@@ -8,7 +8,6 @@ x, y, z, r, g, b, intensity
 """
 from __future__ import print_function
 import glob
-import re
 import os
 import numpy as np
 import binutils as bu
@@ -30,9 +29,9 @@ def main():
     print("processing: ", ' '.join(filenames))
     for filename in filenames:
         if args.dense:
-            outfilename = re.sub("(?i)pcd", "dvol", filename)
+            outfilename = bu.sub(filename, "dvol")
         else:
-            outfilename = re.sub("(?i)pcd", "vol", filename)
+            outfilename = bu.sub(filename, "vol")
         if os.path.isfile(outfilename):
             print("File already exists!")
             continue

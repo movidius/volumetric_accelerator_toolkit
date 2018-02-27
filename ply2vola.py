@@ -9,7 +9,6 @@ TODO: Need to cleverly remove duplicate points and add subdivide function.
 """
 from __future__ import print_function
 import glob
-import re
 import os
 import plyfile
 import numpy as np
@@ -33,9 +32,9 @@ def main():
     print("processing: ", ' '.join(filenames))
     for filename in filenames:
         if args.dense:
-            outfilename = re.sub("(?i)ply", "dvol", filename)
+            outfilename = bu.sub(filename, "dvol")
         else:
-            outfilename = re.sub("(?i)ply", "vol", filename)
+            outfilename = bu.sub(filename, "vol")
         if os.path.isfile(outfilename):
             print("File already exists!")
             continue

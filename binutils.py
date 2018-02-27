@@ -7,7 +7,7 @@ from __future__ import print_function
 import time
 import argparse
 import numpy as np
-
+from os.path import splitext
 
 def normalize(val, minval, maxval):
     """Scale a value between 0 and 1."""
@@ -174,3 +174,12 @@ def parser_args(wildcards):
         help="output a dense point cloud",
         action='store_true')
     return parser
+
+# replacement for re.sub that only modifies the extension
+def sub(filepath, new_ext):
+    bare_file = splitext(filepath)[0]
+
+    if '.' in new_ext:
+        return bare_file + new_ext
+    else:
+        return bare_file + '.' + new_ext
