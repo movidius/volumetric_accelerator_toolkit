@@ -14,22 +14,16 @@ After that point, simply cloning the api will have completed the installation.
 
 There are some packages that must be installed to leverage all of the functionality included.
 
-apt:
+apt
 
 ```
-python3.5
-liblas
-libatlas-base-dev
+sudo apt install python3.5 libatlas-base-dev
 ```
 
 pip3:
 
 ```
-numpy
-numpy-stl
-pyproj
-vtk
-sphinxcontrib-programoutput
+sudo pip3 install liblas numpy numpy-stl pyproj vtk sphinxcontrib-programoutput plyfile
 ```
 
 ## How to use

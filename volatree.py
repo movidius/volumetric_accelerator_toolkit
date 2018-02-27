@@ -43,9 +43,10 @@ class VolaTree(object):
         norms = bu.normalize_np(points, bmin, bmin + maxlen)
         keys = np.int_(np.around((self.sidedivisions - 1) * norms))
 
-        for id, key in enumerate(map(tuple, keys)):
+        # use idx to not conflict with inbuilt id()
+        for idx, key in enumerate(map(tuple, keys)):
             if isinstance(pointsdata, np.ndarray):
-                uniquecubes[key] = pointsdata[id]
+                uniquecubes[key] = pointsdata[idx]
             else:
                 uniquecubes[key] = [255, 255, 255, 255, 255, 255, 255]
 
