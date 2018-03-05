@@ -20,9 +20,6 @@ def normalize(val, minval, maxval):
 
 def normalize_np(vals, minval, maxval):
     """Scale values within a numpy array between 0 and 1."""
-#    vals[vals >= maxval] = 1
-#    vals[vals <= minval] = 0
-
     normed  = np.float64(vals - minval) / np.float64(maxval - minval)
 
     normed[normed < 0] = 0

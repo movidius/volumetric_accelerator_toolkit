@@ -23,7 +23,7 @@ sudo apt install python3.5 libatlas-base-dev
 pip3:
 
 ```
-sudo pip3 install liblas numpy numpy-stl pyproj vtk sphinxcontrib-programoutput plyfile
+sudo pip3 install liblas laspy numpy numpy-stl pyproj vtk sphinxcontrib-programoutput plyfile
 ```
 
 ## How to use

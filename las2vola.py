@@ -7,14 +7,14 @@ on the points obtained. This parser uses the las information
 for the nbit per voxel representation. The data stored is: color, height,
 number of returns, intensity and classification
 
-@author: Jonathan Byrne
+@author: Jonathan Byrne & Anton Shmatov
 """
 from __future__ import print_function
 import glob
 import os
 import numpy as np
 import binutils as bu
-from liblas import file as lasfile
+from laspy import file as lasfile
 from volatree import VolaTree
 
 
@@ -71,22 +71,22 @@ def parse_las(filename, nbits):
     pointfile = lasfile.File(filename, mode='r')
     header = pointfile.header
     maxheight = header.max[2]
-    points = np.zeros((len(pointfile), 3), dtype=np.float)
+    points = np.array((pointfile.get_x(), pointfile.get_y(), pointfile.get_z())).transpose() # get all points, change matrix orientation
     pointsdata = np.zeros((len(pointfile), 7), dtype=np.int)
 
-    for idx, point in enumerate(pointfile):
-        points[idx] = [point.x, point.y, point.z]
-        if nbits > 0:
-            rval = int(bu.normalize(point.number_of_returns, 1, 7) * 255)
-            ival = int(bu.normalize(point.intensity, 0, 1000) * 255)
-            cval = int(bu.normalize(point.classification, 0, 31) * 255)
-            hval = int(bu.normalize(point.z, 0, maxheight) * 255)
-            red = int(np.uint16(point.color.red) / 256)
-            green = int(np.uint16(point.color.green) / 256)
-            blue = int(np.uint16(point.color.blue) / 256)
-            if red == green == blue == 0:
-                red = green = blue = 200
-            pointsdata[idx] = [red, green, blue, hval, rval, ival, cval]
+    if nbits > 0: # if want to set other data, find in matrices
+        coldata = np.int64(np.array([pointfile.red, pointfile.green, pointfile.blue]).transpose() / 256)
+        scaleddata = np.array([pointfile.get_z(), pointfile.get_num_returns(), 
+            pointfile.intensity, pointfile.raw_classification], dtype='int64').transpose()
+        min = np.array([0, 1, 0, 0])
+        max = np.array([maxheight, 7, 1000, 31])
+        normdata = np.int64(bu.normalize_np(scaleddata, min, max) * 255)
+
+        coldata[(coldata[:, 0] == 0) & (coldata[:, 1] == 0) &
+            (coldata[:, 2] == 0)] = 200 # if all three colours are 0, set to 200
+
+        pointsdata = np.concatenate([coldata, normdata], axis=1)
+
     if len(points) == 0:
         return [], [], None
 
