@@ -71,8 +71,16 @@ def parse_las(filename, nbits):
     pointfile = lasfile.File(filename, mode='r')
     header = pointfile.header
     maxheight = header.max[2]
-    points = np.array((pointfile.get_x(), pointfile.get_y(), pointfile.get_z())).transpose() # get all points, change matrix orientation
+    points = np.array((pointfile.x, pointfile.y, pointfile.z)).transpose() # get all points, change matrix orientation
     pointsdata = np.zeros((len(pointfile), 7), dtype=np.int)
+
+    # scale points so that the result is the same on both las and laz files
+    points *= 100
+    diff = points - np.int64(points)
+    if np.any(diff != 0): # manually alter points to get around python's nearest, tie to even rounding
+        points[diff == 0.5] += 0.1
+        points[diff == -0.5] -= 0.1
+        points = np.int64(np.around(points))
 
     if nbits > 0: # if want to set other data, find in matrices
         coldata = np.int64(np.array([pointfile.red, pointfile.green, pointfile.blue]).transpose() / 256)
