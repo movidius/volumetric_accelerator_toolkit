@@ -1,0 +1,13 @@
+{
+    "pipeline": [
+        {
+            "type" : "readers.las",
+            "filename" : "1818.las"
+        },
+        {
+            "type" : "writers.las",
+            "minor_version": 1.2,
+            "filename" : "output.las"
+        }
+    ]
+}
