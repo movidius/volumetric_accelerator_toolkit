@@ -1,7 +1,7 @@
 """
 The VOLA tree for generating sparse VOLA files.
 
-@author Jonathan Byrne
+@author Jonathan Byrne & Anton Shmatov
 """
 from __future__ import print_function
 import pyproj
@@ -63,7 +63,7 @@ class VolaTree(object):
             for offset, elem in enumerate(vals):
                 if elem > 255:
                     raise ValueError("byte payload must be less than 255")
-                payload += elem << (offset * 8)
+                payload += int(elem) << (offset * 8)
             payload = np.uint64(payload)
 
         if self.sparse:
