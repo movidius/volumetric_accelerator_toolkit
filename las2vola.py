@@ -81,6 +81,7 @@ def parse_las(filename, nbits):
         points[diff == 0.5] += 0.1
         points[diff == -0.5] -= 0.1
         points = np.int64(np.around(points))
+    points = points / 100
 
     if nbits > 0: # if want to set other data, find in matrices
         coldata = np.int64(np.array([pointfile.red, pointfile.green, pointfile.blue]).transpose() / 256)
