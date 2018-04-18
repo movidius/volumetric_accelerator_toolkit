@@ -1,6 +1,6 @@
 Introduction
 ============
-VOLA is a compact data structure that unifies computer vision
+Volumetric Accelerator (VOLA) is a compact data structure that unifies computer vision
 and 3D rendering and allows for the rapid calculation of connected
 components, per-voxel census/accounting, CNN inference, path planning
 and obstacle avoidance. Using a  hierarchical bit array format allows
