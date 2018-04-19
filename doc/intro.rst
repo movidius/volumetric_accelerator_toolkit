@@ -13,14 +13,14 @@ used in place of standard point cloud formats.
 
 `A paper detailing the format and its applications can be downloaded here <http://jonathan-byrne.com/vola_applications.pdf>`_
 
-This API is developed to allow for comparison and analysis with existing
-formats. An overview of the api functions and their interactions are shown
+This toolkit is developed to allow for comparison and analysis with existing
+formats. An overview of the toolkit functions and their interactions are shown
 in the image below:
 
 .. figure:: apioverview.png
    :align: center
 
-   layout of the VOLA api
+   layout of the VOLA toolkit 1.0
 
 
 The parsers (xxx2vola) will convert to the VOLA format, embedding information

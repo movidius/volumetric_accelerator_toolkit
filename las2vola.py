@@ -15,6 +15,7 @@ import os
 import numpy as np
 import binutils as bu
 from laspy import file as lasfile
+from laspy.util import LaspyException
 from volatree import VolaTree
 
 
@@ -84,9 +85,25 @@ def parse_las(filename, nbits):
     points = points / 100
 
     if nbits > 0: # if want to set other data, find in matrices
-        coldata = np.int64(np.array([pointfile.red, pointfile.green, pointfile.blue]).transpose() / 256)
+        try:
+            red = pointfile.red
+        except LaspyException:
+            red = [0] * len(points)
+
+        try:
+            green = pointfile.green
+        except LaspyException:
+            green = [0] * len(points)
+
+        try:
+            blue = pointfile.blue
+        except LaspyException:
+            blue = [0] * len(points)
+
+        coldata = np.int64(np.array([red, green, blue]).transpose() / 256)
         scaleddata = np.array([pointfile.get_z(), pointfile.get_num_returns(), 
             pointfile.intensity, pointfile.raw_classification], dtype='int64').transpose()
+
         min = np.array([0, 1, 0, 0])
         max = np.array([maxheight, 7, 1000, 31])
         normdata = np.int64(bu.normalize_np(scaleddata, min, max) * 255)
