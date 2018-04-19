@@ -23,9 +23,21 @@ Parsers
 
    stl2vola
 
+   dem2vola
+
    binvox2vola
 
    kitti2vola
+
+   npy2vola
+
+   pcd2vola
+
+   txt2vola
+
+   ply2vola
+
+   semlas2vola
 
 Readers
 =======

@@ -22,6 +22,12 @@ def main():
         help="the name of the vola file to open", type=str)
 
     parser.add_argument(
+        "-d",
+        "--header",
+        help="print the header detailing information specific to the .vol file",
+        action='store_true')
+
+    parser.add_argument(
         "-v",
         "--voxels",
         help="output the positions of the voxels within the VOLA bounding box",
@@ -70,36 +76,50 @@ def main():
     args = parser.parse_args()
     header, levels, data = open_file(args.vol)
     voxels, voxel_data = get_voxels(header, levels, data)
+    argUsed = False
 
     if args.voxels:
+        argUsed = True
         for vox in voxels:
             print(str(vox)[1:-1])
 
     if args.coordinates:
+        argUsed = True
         coords = get_coords(header, voxels)
         for coord in coords:
             print(str(coord)[1:-1])
 
     if args.images:
+        argUsed = True
         print("writing slices to image folder")
         slice_layers(voxels, header)
 
     if args.map > 0:
+        argUsed = True
         print("generating 2D map")
         generate_map(voxels, header, args.map)
 
     if args.numpy:
+        argUsed = True
         print("generating Numpy Grid")
         numpy_grid(voxels, header)
 
     if args.bincoords:
+        argUsed = True
         bin_coordinates = get_binary_indexes(voxels)
         for (coord, bin_coord) in zip(voxels, bin_coordinates):
             print(str(coord)[1:-1], " ", str(bin_coord))
 
     if args.get:
+        argUsed = True
         get_voxel(args.get, header, levels)
 
+    if args.header:
+        argUsed = True
+        print_header(header)
+
+    if not argUsed:
+        parser.print_help()
 
 def open_file(filename):
     """
