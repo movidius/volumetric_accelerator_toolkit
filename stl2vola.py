@@ -5,8 +5,9 @@ Converts stl triangle meshes into VOLA format.
 STL is an industry standard mesh format. There is no information other than
 triangles so the occupancy information is only available for this format.
 
-TODO: Need to cleverly remove duplicate points and add subdivide function.
+@author Jonathan Byrne
 """
+#TODO: Need to cleverly remove duplicate points and add subdivide function.
 from __future__ import print_function
 import glob
 import os
@@ -20,6 +21,7 @@ def main():
     """Read the file, build the tree. Write a Binary."""
     start_time = bu.timer()
     parser = bu.parser_args("*.stl")
+    parser = bu.add_reverse(parser)
     args = parser.parse_args()
 
     # Parse directories or filenames, whichever you want!
@@ -39,7 +41,10 @@ def main():
             continue
 
         print("converting", filename, "to", outfilename)
-        bbox, points = parse_stl(filename)
+        bbox, points = parse_stl(filename, revzy=args.reverse_zy)
+
+        if args.reverse_zy:
+            points = np.array([points[:, 0], points[:, 2], points[:, 1]]).transpose()
 
         print("STL only has occupancy data," +
               " no additional data is being added")
@@ -50,10 +55,12 @@ def main():
         volatree.countlevels()
         volatree.writebin(outfilename)
 
+        bu.print_ratio(filename, outfilename)
+
     bu.timer(start_time)
 
 
-def parse_stl(filename):
+def parse_stl(filename, revzy=False):
     """Read stl format mesh and return header and points."""
     stlmesh = mesh.Mesh.from_file(filename)
     minvals = stlmesh.min_.tolist()
@@ -62,6 +69,7 @@ def parse_stl(filename):
     points = stlmesh.points[:, :3]
     points = np.append(points, stlmesh.points[:, 3:6], axis=0)
     points = np.append(points, stlmesh.points[:, 6:], axis=0)
+
     return bbox, points
 
 

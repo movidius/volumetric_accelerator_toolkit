@@ -57,6 +57,8 @@ def main():
             volatree.cubify(points, pointsdata)
             volatree.countlevels()
             volatree.writebin(outfilename)
+
+            bu.print_ratio(filename, outfilename)
         else:
             print("The points file is empty!")
     bu.timer(start_time)

@@ -4,7 +4,7 @@ xyz2vola: Converts ascii point clouds into VOLA format.
 
 This will automatically parse files with a structure x,y, z or
 x, y, z, r, g, b, intensity
-@author Jonathan Byrne
+@author Jonathan Byrne and Ananya Gupta
 """
 from __future__ import print_function
 import glob
@@ -17,13 +17,15 @@ from volatree import VolaTree
 def main():
     """Read the file, build the tree. Write a Binary."""
     start_time = bu.timer()
-    parser = bu.parser_args("*.asc / *.xyz")
+    parser = bu.parser_args("*.asc / *.xyz / *.txt")
+    parser = bu.add_reverse(parser)
     args = parser.parse_args()
 
     # Parse directories or filenames, whichever you want!
     if os.path.isdir(args.input):
         filenames = glob.glob(os.path.join(args.input, '*.xyz'))
         filenames.extend(glob.glob(os.path.join(args.input, '*.asc')))
+        filenames.extend(glob.glob(os.path.join(args.input, '*.txt')))
     else:
         filenames = glob.glob(args.input)
 
@@ -39,6 +41,10 @@ def main():
 
         print("converting", filename, "to", outfilename)
         bbox, points, pointsdata = parse_xyz(filename, args.nbits)
+
+        if args.reverse_zy:
+            points = np.array([points[:, 0], points[:, 2], points[:, 1]]).transpose()
+
         # work out how many chunks are required for the data
         if args.nbits:
             print("nbits set, adding metadata to occupancy grid")
@@ -57,6 +63,8 @@ def main():
             volatree.cubify(points, pointsdata)
             volatree.countlevels()
             volatree.writebin(outfilename)
+
+            bu.print_ratio(filename, outfilename)
         else:
             print("The points file is empty!")
     bu.timer(start_time)

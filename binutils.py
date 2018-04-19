@@ -172,11 +172,32 @@ def parser_args(wildcards):
         action='store_true')
     return parser
 
-# replacement for re.sub that only modifies the extension
+def add_reverse(parser):
+    """ adds reverse argument for reversing z and y columns """
+    parser.add_argument(
+        "-z", "--reverse_zy",
+        help="reverse the z and y axes in data",
+        action="store_true")
+
+    return parser
+
 def sub(filepath, new_ext):
+    """ replacement for re.sub that only modifies the extension """
     bare_file = splitext(filepath)[0]
 
     if '.' in new_ext:
         return bare_file + new_ext
     else:
         return bare_file + '.' + new_ext
+
+def print_ratio(filename, outfilename):
+    """ print small size comparison result for user """
+    from os.path import getsize, join
+    from os import getcwd
+
+    path = getcwd()
+    sizeold = getsize(join(path, filename))
+    sizenew = getsize(join(path, outfilename))
+
+    percentage = round(100 * sizenew/sizeold, 2)
+    print("\nThe .vol file is " + str(percentage) + "% of the original") 

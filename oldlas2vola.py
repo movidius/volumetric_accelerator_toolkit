@@ -1,18 +1,17 @@
 #!/usr/bin/env python3
 """
-semlas2vola: Converts semantic 3d net Las files into VOLA format.
-NOTE: using for depth 5 and making max bb side =400 to keep resolution same as
-dublin dataset (1 vox~0.39m)
+Las2vola: Converts Las files into VOLA format.
 
 The ISPRS las format is the standard for LIDAR devices and stores information
 on the points obtained. This parser uses the las information
 for the nbit per voxel representation. The data stored is: color, height,
 number of returns, intensity and classification
 
-@author: Jonathan Byrne and Ananya Gupta
+@author: Jonathan Byrne
 """
 from __future__ import print_function
 import glob
+import re
 import os
 import numpy as np
 import binutils as bu
@@ -36,25 +35,26 @@ def main():
     print("processing: ", ' '.join(filenames))
     for filename in filenames:
         if args.dense:
-            outfilename = bu.sub(filename, "dvol")
+            outfilename = re.sub("(?i)laz|las", "dvol", filename)
         else:
-            outfilename = bu.sub(filename, "vol")
+            outfilename = re.sub("(?i)laz|las", "vol", filename)
         if os.path.isfile(outfilename):
             print("File already exists!")
             continue
 
         print("converting", filename, "to", outfilename)
         bbox, points, pointsdata = parse_las(filename, args.nbits)
-        bbox = max_bb(bbox)
 
         # work out how many chunks are required for the data
         if args.nbits:
+            print("nbits set, adding metadata to occupancy grid")
             div, mod = divmod(len(pointsdata[0]), 8)
             if mod > 0:
                 nbits = div + 1
             else:
                 nbits = div
         else:
+            print("Only occupancy data being set! Use -n flag to add metadata")
             nbits = 0
 
         if len(points) > 0:
@@ -62,18 +62,9 @@ def main():
                                 args.dense, nbits)
             volatree.cubify(points, pointsdata)
             volatree.writebin(outfilename)
-
-            bu.print_ratio(filename, outfilename)
         else:
             print("The las file is empty!")
     bu.timer(start_time)
-
-
-def max_bb(bbox):
-    difference = [i - j for i, j in zip(bbox[1], bbox[0])]
-    maxidx = difference.index(max(difference))
-    bbox[1][maxidx] = bbox[0][maxidx] + 400
-    return bbox
 
 
 def parse_las(filename, nbits):
@@ -97,6 +88,8 @@ def parse_las(filename, nbits):
             if red == green == blue == 0:
                 red = green = blue = 200
             pointsdata[idx] = [red, green, blue, hval, rval, ival, cval]
+    if len(points) == 0:
+        return [], [], None
 
     bbox = [points.min(axis=0).tolist(), points.max(axis=0).tolist()]
 

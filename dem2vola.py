@@ -23,6 +23,8 @@ def main(filestring, depth):
         volatree = VolaTree(depth, bbox, 2000, False, 0)
         volatree.cubify(data)
         volatree.writebin(outfilename)
+
+        bu.print_ratio(filename, outfilename)
         # volatree.printlevel(depth, True)
 
 

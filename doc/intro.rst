@@ -11,13 +11,13 @@ utilize point-clouds due to memory constraints. Furthermore, geographical
 and qualitative data is embedded in the file structure to allow it to be
 used in place of standard point cloud formats.
 
-`A paper detailing the format and its applications can be downloaded here <http://jonathan-byrne.com/vola_applications.pdf>`_
+`A paper detailing the format and its applications can be downloaded here <https://www.movidius.com/research/applications-of-vola-format-for-3d-data-knowledge-discovery>`_
 
 This toolkit is developed to allow for comparison and analysis with existing
 formats. An overview of the toolkit functions and their interactions are shown
 in the image below:
 
-.. figure:: apioverview.png
+.. figure:: tkoverview.png
    :align: center
 
    layout of the VOLA toolkit 1.0
@@ -31,7 +31,7 @@ There is sample data for each of the formats in the samplefiles folder
 
 An example workflow for a LIDAR file containing color information is as follows:
 
-./las2vola samplefiles/cchurchdecimated 3 -n
+./las2vola samplefiles/cchurchdecimated.laz 3 -n
 
 this will parse the las file to a vola depth of 3 and the -n flag means the
 color information will be automatically added to VOLA file

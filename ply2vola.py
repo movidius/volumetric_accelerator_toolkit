@@ -5,8 +5,9 @@ Converts ply triangle meshes into VOLA format.
 PLY is an industry standard mesh format. This parser only looks at the points
 and their colors, not the triangles.
 
-TODO: Need to cleverly remove duplicate points and add subdivide function.
+@author Jonathan Byrne
 """
+#TODO: Need to cleverly remove duplicate points and add subdivide function.
 from __future__ import print_function
 import glob
 import os
@@ -21,6 +22,7 @@ def main():
     """Read the file, build the tree. Write a Binary."""
     start_time = bu.timer()
     parser = bu.parser_args("*.ply")
+    parser = bu.add_reverse(parser)
     args = parser.parse_args()
 
     # Parse directories or filenames, whichever you want!
@@ -42,6 +44,9 @@ def main():
         print("converting", filename, "to", outfilename)
         bbox, points, pointsdata = parse_ply(filename, args.nbits)
 
+        if args.reverse_zy:
+            points = np.array([points[:, 0], points[:, 2], points[:, 1]]).transpose()
+
         # work out how many chunks are required for the data
         print("PLY only has occupancy data," +
               " no additional data is being added")
@@ -51,6 +56,8 @@ def main():
         volatree.cubify(points)
         volatree.countlevels()
         volatree.writebin(outfilename)
+
+        bu.print_ratio(filename, outfilename)
 
     bu.timer(start_time)
 
