@@ -359,15 +359,12 @@ def generate_map(coordinates, header, start_height):
 
 def numpy_grid(coordinates, header):
     """For a given starting height, compress the maps to a plane."""
-    datadir = "./dataset/"
     basename = os.path.basename(
         header['filename']).replace(
         '.vol',
-        'heighttrain.npy')
-    filename = datadir + basename
-    if not os.path.exists(datadir):
-        os.makedirs(datadir)
-
+        '.npy')
+    filename = basename
+    
     depth = header['depth']
     sidelen = pow(4, depth)
     level = np.zeros((sidelen, sidelen, sidelen))
