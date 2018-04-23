@@ -6,10 +6,12 @@ from re import split
 from time import sleep as delayexecution, localtime, strftime
 
 # supply desired vola depth and the supported types, followed by their script file prefix
-VOLA_DEPTH = 4
+VOLA_DEPTH = 3
 DENSE = False
-NBITS = False
-CRS =  3089 #2000
+NBITS = True
+CRS =  None #2000
+CRS_OVERRIDE = 3089
+SIDE_LENGTH = 100
 supported_types = {
     'laz': 'las',
     'las': 'las',
@@ -24,9 +26,15 @@ supported_types = {
 }
 
 # limit cpu based on time of day
-limtime = int(strftime('%H%M', localtime()))
-CPU_LIMIT = 50 if (limtime > 730 and limtime < 1830) else 100
-LIM = 'cpulimit -l ' + str(CPU_LIMIT) + ' -z '
+ltime = localtime()
+
+if ltime.tm_wday not in {5, 6}:
+    limtime = int(strftime('%H%M', ltime))
+    CPU_LIMIT = 25 if ((limtime >= 730 and limtime <= 1205) or 
+        (limtime >= 1230 and limtime <= 1830)) else 100
+    LIM = '' if CPU_LIMIT == 100 else 'cpulimit -l ' + str(CPU_LIMIT) + ' -z '
+else:
+    LIM = ''
 
 # parse the incoming filename
 
@@ -52,10 +60,19 @@ file_dir = file_dir + '/' # need to separate for working_dir to work
 RUN = True
 
 def checkOutput(command, ret=False, limit=True):
+    if command[0:2] == 'rm' or command[0:2] == 'mv':
+        limit = False
+
     if not ret:
         print(subprocess.check_output(split('\s', (LIM if limit else '') + command)))
     else:
         return subprocess.check_output(split('\s', (LIM if limit else '') + command))
+
+def fixVolName(filename):
+    if filename[0] == '_':
+        return filename[1:].replace('__split__', '').replace('__filt__', '')
+    else:
+        return filename.replace('__split__', '').replace('__filt__', '')
 
 # figure out which command needs to be used, and execute it
 if extension != '':
@@ -63,7 +80,7 @@ if extension != '':
     commands = {
         # if vol, move to backup
         'vol': [('mv ' + file_dir + origin_filename + ' ' + working_dir + 'data/' +
-                 origin_filename.replace('__split__', '').replace('__filt__', ''))]
+                 fixVolName(origin_filename))]
     }.get(extension, list())
 
     pipelinejson = None
@@ -78,12 +95,17 @@ if extension != '':
 
             if origin is not None:
                 CRS_attempt = list(filter(None, split('AUTHORITY\["EPSG","(\d+)"\]\]', origin)))[-1]
+                
+                try:
+                    CRS_attempt = int(CRS_attempt)
+                except:
+                    pass
 
-                print("Found CRS in file: " + CRS_attempt)
+                print("Found CRS in file: " + str(CRS_attempt))
 
-                origin = tree.find('header').find('minimum')
-                origin_x = origin.find('x').text
-                origin_y = origin.find('y').text
+            origin = tree.find('header').find('minimum')
+            origin_x = origin.find('x').text
+            origin_y = origin.find('y').text
 
         if not SPLIT and CRS_attempt is None:
             if isfile(file_dir + filename + '.xml'):
@@ -96,15 +118,21 @@ if extension != '':
                 doctails = tree.find('MapProjectionDefinition').text
 
                 epsg = list(filter(None, split('AUTHORITY\["EPSG",(\d+)\]\]', doctails)))[-1]
-                CRS_attempt = epsg
+                
+                try:
+                    CRS_attempt = int(epsg)
+                except:
+                    pass
 
                 commands.append('mv ' + file_dir + filename + '.xml ' + working_dir + 'converted_clouds/' + filename + '.xml')
 
-            else: # if no CRS and no xml, don't run
-                RUN = False
-
+        
         if CRS_attempt is not None and isinstance(CRS_attempt, int):
             CRS = CRS_attempt
+        elif CRS_OVERRIDE is not None:
+            CRS = CRS_OVERRIDE
+        else: # if no CRS and no xml, don't run
+            RUN = False
 
         # split the file into 500x500 chunks if possible, converting to 1.2 laz 
         # and reading correct CRS we separate the splitting and filtering of chunks
@@ -118,20 +146,29 @@ if extension != '':
                     '"type": "readers.las",'
                     '"spatialreference":  "EPSG:' + str(CRS) + '",'
                     '"filename": "' + file_dir + origin_filename + '"'
-                    "}, {"             
-                    '"type": "filters.splitter",'
-                    '"length": "500",'
-                    '"origin_x": "' + origin_x + '",'
-                    '"origin_y": "' + origin_y + '"'
-                    "}, {"
-                    '"type": "writers.las",'
-                    '"compression": "LASZIP",'
-                    '"minor_version": 2,'
-                    '"dataformat_id": 0,'
-                    '"filename": "' + file_dir + filename + '__split___#.laz"'
-                    "} "
-                    "] "
-                    "}")
+                    "},")
+
+            if CRS == 3089:
+                pipelinejson = pipelinejson + ('{'
+                    '"type": "filters.reprojection",'
+                    '"in_srs": "EPSG:3089",'
+                    '"out_srs": "EPSG:3088"'
+                    '},')
+
+            pipelinejson = pipelinejson + ('{'             
+                '"type": "filters.splitter",'
+                '"length": "' + str(SIDE_LENGTH) + '",'
+                '"origin_x": "' + origin_x + '",'
+                '"origin_y": "' + origin_y + '"'
+                "}, {"
+                '"type": "writers.las",'
+                '"compression": "LASZIP",'
+                '"minor_version": 2,'
+                '"dataformat_id": 0,'
+                '"filename": "' + file_dir + filename + '__split___#.laz"'
+                "} "
+                "] "
+                "}")
 
         # filter the data
         if SPLIT and not FILTERED:
