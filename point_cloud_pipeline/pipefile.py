@@ -1,7 +1,9 @@
 import argparse
 import subprocess
 import xml.etree.ElementTree as ET
-from os.path import dirname as getdirname, abspath as getabspath, isfile, split as separatefilename
+from os import makedirs
+from os.path import (dirname as getdirname, abspath as getabspath,
+    isfile, split as separatefilename, isdir)
 from re import split
 from time import sleep as delayexecution, localtime, strftime
 
@@ -11,6 +13,8 @@ DENSE = False
 NBITS = True
 CRS_OVERRIDE = 28992 #3089
 SIDE_LENGTH = 100
+LIMIT = True
+
 supported_types = {
     'laz': 'las',
     'las': 'las',
@@ -27,7 +31,7 @@ supported_types = {
 # limit cpu based on time of day
 ltime = localtime()
 
-if ltime.tm_wday not in {5, 6}:
+if ltime.tm_wday not in {5, 6}: # do not limit on weekends
     limtime = int(strftime('%H%M', ltime))
     CPU_LIMIT = 25 if ((limtime >= 730 and limtime <= 1205) or 
         (limtime >= 1230 and limtime <= 1830)) else 100
@@ -38,7 +42,7 @@ else:
 # parse the incoming filename
 
 parser = argparse.ArgumentParser()
-parser.add_argument('file_name', type=str)
+parser.add_argument('file_name', type=str, help="File to consider processing.")
 
 args = parser.parse_args()
 
@@ -55,6 +59,9 @@ FILTERED = '__filt__' in filename
 file_dir = separatefilename(args.file_name)[0] # eg /vola/point_cloud_pipeline/
 working_dir = getdirname(file_dir) + '/'  # eg /vola/
 file_dir = file_dir + '/' # need to separate for working_dir to work
+
+if not isdir(working_dir + 'data/'):
+    makedirs(working_dir + 'data/')
 
 RUN = True
 
@@ -89,7 +96,7 @@ if extension != '':
 
         if not SPLIT or FILTERED:
             # need to get the current CRS to tell the vola api
-            tree = ET.fromstring(checkOutput('lasinfo ' + file_dir + origin_filename + ' --xml', ret=True))
+            tree = ET.fromstring(checkOutput('lasinfo ' + file_dir + origin_filename + ' --xml', ret=True, limit=LIMIT))
             origin = tree.find('header').find('srs').find('wkt').text
 
             if origin is not None:
@@ -100,15 +107,13 @@ if extension != '':
                 except:
                     pass
 
-                print("Found CRS in file: " + str(CRS_attempt))
-
             origin = tree.find('header').find('minimum')
             origin_x = origin.find('x').text
             origin_y = origin.find('y').text
 
         if not SPLIT and CRS_attempt is None:
             if isfile(file_dir + filename + '.xml'):
-                tree = ET.fromstring(checkOutput('lasinfo ' + file_dir + origin_filename + ' --xml', ret=True))
+                tree = ET.fromstring(checkOutput('lasinfo ' + file_dir + origin_filename + ' --xml', ret=True, limit=LIMIT))
                 origin = tree.find('header').find('minimum')
                 origin_x = origin.find('x').text
                 origin_y = origin.find('y').text
@@ -128,9 +133,14 @@ if extension != '':
         
         if CRS_attempt is not None and isinstance(CRS_attempt, int):
             CRS = CRS_attempt
+
+            print("Found CRS in file: " + str(CRS))
         elif CRS_OVERRIDE is not None:
             CRS = CRS_OVERRIDE
+
+            print("CRS Overriden to: " + str(CRS))
         else: # if no CRS and no xml, don't run
+            print("Not running for: " + filename)
             RUN = False
 
         # split the file into 500x500 chunks if possible, converting to 1.2 laz 
@@ -223,4 +233,4 @@ if extension != '':
                 #    command = 'rm ' + file_dir + '/' + file
 
                 print(strftime('%d/%m %H:%M:%S', localtime()) + " - Executing " + command)
-                checkOutput(command)
+                checkOutput(command, limit=LIMIT)
