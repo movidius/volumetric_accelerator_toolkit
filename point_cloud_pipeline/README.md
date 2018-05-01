@@ -73,11 +73,11 @@ Any changes made to pipefile.py do not require a restart of the pipeline,
 as they will take effect for the next file considered, unless you wish the
 changes to be immediate on a running process - then everything must be restarted.
 
-## Current Limitations
--Unable to automatically detect CRS in some cases, issues with original las(z) files
--Cannot backtrack to point cloud files whose xml was not found
--Issue with memory usage when dealing with large point clouds (>200 MB) (tested on 16 GB RAM & 12 GB SWP)
-...- machine runs out of memory and has to kill a process to keep functioning
-...- this can take effect when reading 2+ files. only relevant in splitting stage.
--CPU Limitation sometimes does not take effect - problem with cpulimit
--Occasionally lasinfo/pdal cannot read the las(z) files - corruption?
+## Current Issues
+- Unable to automatically detect CRS in some cases, issues with original las(z) files
+- Cannot backtrack to point cloud files whose xml was not found
+- Issue with memory usage when dealing with large point clouds (>200 MB) (tested on 16 GB RAM & 12 GB SWP)
+	- machine runs out of memory and has to kill a process to keep functioning
+	- this can take effect when reading 2+ files. only relevant in splitting stage.
+- CPU Limitation sometimes does not take effect - problem with cpulimit
+- Occasionally lasinfo/pdal cannot read the las(z) files - corruption?
