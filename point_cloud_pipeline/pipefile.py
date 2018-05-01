@@ -9,8 +9,7 @@ from time import sleep as delayexecution, localtime, strftime
 VOLA_DEPTH = 3
 DENSE = False
 NBITS = True
-CRS =  None #2000
-CRS_OVERRIDE = 3089
+CRS_OVERRIDE = 28992 #3089
 SIDE_LENGTH = 100
 supported_types = {
     'laz': 'las',
