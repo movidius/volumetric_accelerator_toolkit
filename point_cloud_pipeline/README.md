@@ -41,6 +41,10 @@ as a bash script will begin the pipeline. From here on out, any supported
 point-cloud or 3D files that are _dropped_ into the specified folder will be
 considered by the python script _pipefile.py_.
 
+```
+./pipeline.sh
+```
+
 Relevant changes that could be made to this file are the constant variables
 near the top of the file, denoted in all caps.
 
