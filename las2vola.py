@@ -62,6 +62,8 @@ def main():
                                 args.dense, nbits)
             volatree.cubify(points, pointsdata)
             volatree.writebin(outfilename)
+
+            bu.print_ratio(filename, outfilename)
         else:
             print("The las file is empty!")
     bu.timer(start_time)
