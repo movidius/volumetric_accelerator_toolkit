@@ -1,4 +1,8 @@
-"""Filter a vola file by value and then set a color and write the file."""
+"""
+Filter a vola file by value and then set a color and write the file.
+@author Jonathan Byrne
+@copyright 2018 Intel Ltd (see LICENSE file).
+"""
 import argparse
 import numpy as np
 import binutils as bu

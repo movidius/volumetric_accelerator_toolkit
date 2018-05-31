@@ -4,7 +4,8 @@ xyz2vola: Converts ascii point clouds into VOLA format.
 
 This will automatically parse files with a structure x,y, z or
 x, y, z, r, g, b, intensity
-@author Jonathan Byrne and Ananya Gupta
+@author Ananya Gupta and Jonathan Byrne
+@copyright 2018 Intel Ltd (see LICENSE file).
 """
 from __future__ import print_function
 import glob

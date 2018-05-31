@@ -1,7 +1,10 @@
 """
 The VOLA tree for generating sparse VOLA files.
-
+The VOLA compact hierarchical datastructure for 3D data
+VOLA uses a spatial partitioning approach to hierarchically encode
+3D data and remove empty space as quickly as possible.
 @author Jonathan Byrne & Anton Shmatov
+@copyright 2018 Intel Ltd (see LICENSE file).
 """
 from __future__ import print_function
 import pyproj

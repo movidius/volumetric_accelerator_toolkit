@@ -1,8 +1,10 @@
+#!/usr/bin/env python3
 """
-THIS PARSER IS NOT COMPLETED.
-
-based on very old code
-."""
+Reads data from ESRI ascii Grids
+@deprecated This has not been used since version 0.9
+@author Jonathan Byrne & Anton Shmatov
+@copyright 2018 Intel Ltd (see LICENSE file).
+"""
 from __future__ import print_function
 from collections import namedtuple
 import sys

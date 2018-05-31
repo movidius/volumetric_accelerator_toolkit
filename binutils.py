@@ -1,7 +1,9 @@
 """
 Binary Utilities Class.
-
-Selection of utility functions for binary operations and other handy functions.
+Selection of utility functions for binary operations 
+and other handy functions.
+@author jonathan.byrne@intel.com
+@copyright 2018 Intel Ltd (see LICENSE file).
 """
 from __future__ import print_function
 import time

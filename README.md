@@ -40,7 +40,6 @@ laz (if compiling liblas manually with laszip)
 npy array
 pcd
 ply
-semlas
 stl
 txt
 xyz

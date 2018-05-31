@@ -7,10 +7,9 @@ length encoding to achieve significant compression. It is included
 as there are many datasets that are stored in binvox format.
 There is no information other than voxels so the occupancy information
 is only available for this format.
-
 @author Jonathan Byrne
+@copyright 2018 Intel Ltd (see LICENSE file).
 """
-# TODO: switch xyz and xzy encoding
 from __future__ import print_function
 import glob
 import os

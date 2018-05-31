@@ -5,8 +5,8 @@ Converts bin files from the kitti dataset into VOLA format.
 Kitti is a LIDAR dataset for automotive testing. The dataset
 stores an intensity value which is converted to a greyscale
 color for nbits VOLA.
-
-@author: Ananya Gupta and Jonathan Byrne
+@author Ananya Gupta and Jonathan Byrne
+@copyright 2018 Intel Ltd (see LICENSE file).
 """
 from __future__ import print_function
 import glob

@@ -3,7 +3,8 @@ VOLA viewer.
 
 VTK and python 3 based viewer for showing the voxel data for either single or
 multiple tiles. Uses the VOLA reader and the .vola format for multiple tiles
-@author Jonathan Byrne
+@author Jonathan Byrne & Anton Shmatov
+@copyright 2018 Intel Ltd (see LICENSE file).
 """
 from __future__ import print_function
 import json

@@ -5,10 +5,9 @@ npy2vola: Converts numpy arrays into VOLA format.
 Converting numpy depth images with a fixed grid size of 256
 There is no information other than voxels so the occupancy information
 is only available for this format.
-
-@author Jonathan Byrne
+@author Jonathan Byrne & Anton Shmatov
+@copyright 2018 Intel Ltd (see LICENSE file).
 """
-# TODO: switch xyz and xzy encoding
 from __future__ import print_function
 import glob
 import os

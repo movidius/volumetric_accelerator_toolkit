@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Reads all the headers in a folder and creates a vola index."""
+"""Reads all the headers in a folder and creates a vola index.
+@author Jonathan Byrne
+@copyright 2018 Intel Ltd (see LICENSE file).
+"""
 from __future__ import print_function
 import argparse
 import glob
