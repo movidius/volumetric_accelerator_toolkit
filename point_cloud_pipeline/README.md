@@ -59,8 +59,8 @@ LIMIT = True
 Most of these parameters are self explanitory. Finding a point cloud's CRS comes
 in order of local _info.json_ file within folder, CRS data from within the point
 cloud file (only laz/las), or else a local and similarly named xml file (i.e. if
-file is _qt1.laz_ then _qt1.xml_). When using the xml file variant, it is import to
-copy all xml files before their point cloud variants, as the pipeline will
+file is _qt1.laz_ then _qt1.xml_). When using the xml file variant, it is important
+to copy all xml files before their point cloud variants, as the pipeline will
 not backtrack on xml files that it did not find.
 Hence, this CRS Override is used in most cases as data providers rarely
 inject the CRS into every single file they provide. This override is only
