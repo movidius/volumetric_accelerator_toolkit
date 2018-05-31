@@ -6,14 +6,14 @@ from os.path import (dirname as getdirname, abspath as getabspath,
     isfile, split as separatefilename, isdir)
 from re import split
 from time import sleep as delayexecution, localtime, strftime
+from crsparser import CRSParser
 
 # supply desired vola depth and the supported types, followed by their script file prefix
 VOLA_DEPTH = 3
 DENSE = False
 NBITS = True
-CRS_OVERRIDE = 28992 #3089
 SIDE_LENGTH = 100
-LIMIT = True
+LIMIT = False
 
 supported_types = {
     'laz': 'las',
@@ -40,7 +40,6 @@ else:
     LIM = ''
 
 # parse the incoming filename
-
 parser = argparse.ArgumentParser()
 parser.add_argument('file_name', type=str, help="File to consider processing.")
 
@@ -49,8 +48,8 @@ args = parser.parse_args()
 origin_filename = separatefilename(args.file_name)[-1]
 
 # get extension and filename
-extension = split('\.', origin_filename)[-1]
-filename = split('\.' + extension, origin_filename)[0]
+extension = split(r'\.', origin_filename)[-1]
+filename = split(r'\.' + extension, origin_filename)[0]
 
 SPLIT = '__split__' in filename
 FILTERED = '__filt__' in filename
@@ -63,22 +62,21 @@ file_dir = file_dir + '/' # need to separate for working_dir to work
 if not isdir(working_dir + 'data/'):
     makedirs(working_dir + 'data/')
 
-RUN = True
-
-def checkOutput(command, ret=False, limit=True):
-    if command[0:2] == 'rm' or command[0:2] == 'mv':
-        limit = False
-
-    if not ret:
-        print(subprocess.check_output(split('\s', (LIM if limit else '') + command)))
-    else:
-        return subprocess.check_output(split('\s', (LIM if limit else '') + command))
-
 def fixVolName(filename):
     if filename[0] == '_':
         return filename[1:].replace('__split__', '').replace('__filt__', '')
     else:
         return filename.replace('__split__', '').replace('__filt__', '')
+
+# parse the CRS and origin values from relevant file
+crsparser = CRSParser(working_dir, LIMIT, LIM)
+crsparser.parse(args.file_name, file_dir)
+CRS = crsparser.CRS
+origin_x = crsparser.origin_x
+origin_y = crsparser.origin_y
+
+# get useful function
+checkOutput = crsparser.checkOutput
 
 # figure out which command needs to be used, and execute it
 if extension != '':
@@ -92,57 +90,6 @@ if extension != '':
     pipelinejson = None
 
     if extension == 'laz' or extension == 'las':
-        CRS_attempt = None
-
-        if not SPLIT or FILTERED:
-            # need to get the current CRS to tell the vola api
-            tree = ET.fromstring(checkOutput('lasinfo ' + file_dir + origin_filename + ' --xml', ret=True, limit=LIMIT))
-            origin = tree.find('header').find('srs').find('wkt').text
-
-            if origin is not None:
-                CRS_attempt = list(filter(None, split('AUTHORITY\["EPSG","(\d+)"\]\]', origin)))[-1]
-                
-                try:
-                    CRS_attempt = int(CRS_attempt)
-                except:
-                    pass
-
-            origin = tree.find('header').find('minimum')
-            origin_x = origin.find('x').text
-            origin_y = origin.find('y').text
-
-        if not SPLIT and CRS_attempt is None:
-            if isfile(file_dir + filename + '.xml'):
-                tree = ET.fromstring(checkOutput('lasinfo ' + file_dir + origin_filename + ' --xml', ret=True, limit=LIMIT))
-                origin = tree.find('header').find('minimum')
-                origin_x = origin.find('x').text
-                origin_y = origin.find('y').text
-
-                tree = ET.parse(file_dir + filename + '.xml').getroot()
-                doctails = tree.find('MapProjectionDefinition').text
-
-                epsg = list(filter(None, split('AUTHORITY\["EPSG",(\d+)\]\]', doctails)))[-1]
-                
-                try:
-                    CRS_attempt = int(epsg)
-                except:
-                    pass
-
-                commands.append('mv ' + file_dir + filename + '.xml ' + working_dir + 'converted_clouds/' + filename + '.xml')
-
-        
-        if CRS_attempt is not None and isinstance(CRS_attempt, int):
-            CRS = CRS_attempt
-
-            print("Found CRS in file: " + str(CRS))
-        elif CRS_OVERRIDE is not None:
-            CRS = CRS_OVERRIDE
-
-            print("CRS Overriden to: " + str(CRS))
-        else: # if no CRS and no xml, don't run
-            print("Not running for: " + filename)
-            RUN = False
-
         # split the file into 500x500 chunks if possible, converting to 1.2 laz 
         # and reading correct CRS we separate the splitting and filtering of chunks
         # to gain advantage of cores - pipeline only uses one core per pipeline. 
@@ -211,26 +158,22 @@ if extension != '':
 
             commands.insert(0, 'pdal pipeline ' + filename + 'jp.json')
             commands.append('rm ' + filename + 'jp.json')
-            #if '__split__' not in filename:
-            #    commands = ['pdal split ' + file_dir + file + ' ' + file_dir + filename + '__split__.laz length 500 --origin_x ' + origin_x + ' --origin_y ' + origin_y + ' --writers.las.minor_version=2 --writers.las.compression="LASZIP"']
 
-    if RUN:
-        # if neither laz, las or vol for special treatment, use generic script
-        if len(commands) == 0 and extension in list(supported_types.keys()):
-            commands.append('python3 ' + working_dir + 'vola_api/' + supported_types[extension] + '2vola.py ' + file_dir + origin_filename + ' ' + str(VOLA_DEPTH) + ' --crs ' + str(CRS) + (' -n' if NBITS else '') + (' -d' if DENSE else ''))
+    # if neither laz, las or vol for special treatment, use generic script
+    if len(commands) == 0 and extension in list(supported_types.keys()):
+        commands.append('python3 ' + working_dir + 'vola_api/' + supported_types[extension] +
+            '2vola.py ' + file_dir + origin_filename + ' ' + str(VOLA_DEPTH) +
+            ' --crs ' + str(CRS) + (' -n' if NBITS else '') + (' -d' if DENSE else ''))
 
-        # if we found a suitable command for the filetype, execute each in list
-        if len(commands) != 0:
-            # move whatever file we used to backup after done, as long as not vola
-            if extension != 'vol' and not SPLIT:
-                commands.append('mv ' + file_dir + origin_filename + ' ' + working_dir + 'converted_clouds/' + origin_filename)
-            if extension != 'vol' and SPLIT:
-                commands.append('rm ' + file_dir + origin_filename)
+    # if we found a suitable command for the filetype, execute each in list
+    if len(commands) != 0:
+        # move whatever file we used to backup after done, as long as not vola
+        if extension != 'vol' and not SPLIT:
+            commands.append('mv ' + file_dir + origin_filename + ' ' + working_dir +
+                'converted_clouds/' + origin_filename)
+        if extension != 'vol' and SPLIT:
+            commands.append('rm ' + file_dir + origin_filename)
 
-            for command in commands:
-                # if working with las and equivalent .laz already in backup, remove instead of moving
-                #if command[0] + command[1] == 'mv' and isfile(working_dir + '/converted_clouds/' + filename + 'laz') and extension != 'vol':
-                #    command = 'rm ' + file_dir + '/' + file
-
-                print(strftime('%d/%m %H:%M:%S', localtime()) + " - Executing " + command)
-                checkOutput(command, limit=LIMIT)
+        for command in commands:
+            print(strftime('%d/%m %H:%M:%S', localtime()) + " - Executing " + command)
+            checkOutput(command, limit=LIMIT)

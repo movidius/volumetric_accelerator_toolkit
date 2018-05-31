@@ -52,16 +52,15 @@ near the top of the file, denoted in all caps.
 VOLA_DEPTH = 3
 DENSE = False
 NBITS = True
-CRS_OVERRIDE = 28992
 SIDE_LENGTH = 100
 LIMIT = True
 ```
 
-Most of these parameters are self explanitory, apart from *CRS_OVERRIDE*;
-this parameter is used whenever a CRS cannot be extracted from the point
-cloud file (if las or laz), optionally an adjacent xml file (as some data
-providers tend to do). When using the xml file variant, it is import to
-copy all xml files before their point cloud variants, as the pipeline will
+Most of these parameters are self explanitory. Finding a point cloud's CRS comes
+in order of local _info.json_ file within folder, CRS data from within the point
+cloud file (only laz/las), or else a local and similarly named xml file (i.e. if
+file is _qt1.laz_ then _qt1.xml_). When using the xml file variant, it is important
+to copy all xml files before their point cloud variants, as the pipeline will
 not backtrack on xml files that it did not find.
 Hence, this CRS Override is used in most cases as data providers rarely
 inject the CRS into every single file they provide. This override is only
@@ -78,7 +77,7 @@ as they will take effect for the next file considered, unless you wish the
 changes to be immediate on a running process - then everything must be restarted.
 
 ## Current Issues
-- Unable to automatically detect CRS in some cases, issues with original las(z) files
+- Unable to automatically detect CRS in some cases, issues with original las(z) files - use _info.json_
 - Cannot backtrack to point cloud files whose xml was not found
 - Issue with memory usage when dealing with large point clouds (>200 MB) (tested on 16 GB RAM & 12 GB SWP)
 	- machine runs out of memory and has to kill a process to keep functioning
