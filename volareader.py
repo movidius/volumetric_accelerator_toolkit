@@ -3,6 +3,9 @@ VOLA Reader.
 
 Processes sparse vola files (.vol). Reads in the header information and
 has a set of functions for extracting the voxel locations and data.
+
+@author Jonathan Byrne
+@copyright 2018 Intel Ltd (see LICENSE file).
 """
 from __future__ import print_function
 import struct

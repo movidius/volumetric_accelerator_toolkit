@@ -5,6 +5,7 @@ pcd2vola: Converts ascii PCL point clouds into VOLA format.
 This will automatically parse files with a structure x,y, z or
 x, y, z, r, g, b, intensity
 @author Jonathan Byrne
+@copyright 2018 Intel Ltd (see LICENSE file).
 """
 from __future__ import print_function
 import glob

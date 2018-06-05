@@ -5,7 +5,9 @@ txt2vola: Converts xyz point clouds into VOLA format.
 ASSUMPTION: first line is header from pdal
 This will automatically parse files with a structure
 x, y, z, intensity, r, g, b, classification
-@author Jonathan Byrne and Ananya Gupta
+
+@author Ananya Gupta and Jonathan Byrne
+@copyright 2018 Intel Ltd (see LICENSE file).
 """
 
 from __future__ import print_function

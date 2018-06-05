@@ -6,8 +6,8 @@ The ISPRS las format is the standard for LIDAR devices and stores information
 on the points obtained. This parser uses the las information
 for the nbit per voxel representation. The data stored is: color, height,
 number of returns, intensity and classification
-
-@author: Jonathan Byrne & Anton Shmatov
+@author Jonathan Byrne & Anton Shmatov
+@copyright 2018 Intel Ltd (see LICENSE file).
 """
 from __future__ import print_function
 import glob
@@ -76,15 +76,6 @@ def parse_las(filename, nbits):
     maxheight = header.max[2]
     points = np.array((pointfile.x, pointfile.y, pointfile.z)).transpose() # get all points, change matrix orientation
     pointsdata = np.zeros((len(pointfile), 7), dtype=np.int)
-
-    # scale points so that the result is the same on both las and laz files
-    points *= 100
-    diff = points - np.int64(points)
-    if np.any(diff != 0): # manually alter points to get around python's nearest, tie to even rounding
-        points[diff == 0.5] += 0.1
-        points[diff == -0.5] -= 0.1
-        points = np.int64(np.around(points))
-    points = points / 100
 
     if nbits > 0: # if want to set other data, find in matrices
         try:

@@ -6,6 +6,7 @@ STL is an industry standard mesh format. There is no information other than
 triangles so the occupancy information is only available for this format.
 
 @author Jonathan Byrne
+@copyright 2018 Intel Ltd (see LICENSE file).
 """
 #TODO: Need to cleverly remove duplicate points and add subdivide function.
 from __future__ import print_function
