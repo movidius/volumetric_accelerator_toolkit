@@ -47,11 +47,11 @@ class VolaTree(object):
         keys = np.int_(np.around((self.sidedivisions - 1) * norms))
 
         # use idx to not conflict with inbuilt id()
-        for idx, key in enumerate(map(tuple, keys)):
-            if isinstance(pointsdata, np.ndarray):
+        if isinstance(pointsdata, np.ndarray):
+            for idx, key in enumerate(map(tuple, keys)):
                 uniquecubes[key] = pointsdata[idx]
-            else:
-                uniquecubes[key] = [255, 255, 255, 255, 255, 255, 255]
+        else: # if no pointdata, assign all points simultaneously
+            uniquecubes = dict.fromkeys(tuple(map(tuple, keys)), [255, 255, 255, 255, 255, 255, 255])
 
         print("Computed number of occupied voxels:", len(uniquecubes))
         print("Now building vola tree")

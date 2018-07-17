@@ -2,7 +2,7 @@
 """
 npy2vola: Converts numpy arrays into VOLA format.
 
-Converting numpy depth images with a fixed grid size of 256
+Converting numpy depth images with variable grid size
 There is no information other than voxels so the occupancy information
 is only available for this format.
 @author Jonathan Byrne & Anton Shmatov
@@ -61,7 +61,10 @@ def parse_npy(filename):
     """Read xyz format point data and return header, points and points data."""
     depthmap = np.load(filename)
     points = np.argwhere(depthmap == 1).tolist()
-    bbox = [[0, 0, 0], [255, 255, 255]]
+
+    # find maximum bound and set bbox accordingly
+    max_p = max(max(points))
+    bbox = [[0]*3, [max_p]*3]
     return bbox, points, None
 
 
