@@ -1,9 +1,9 @@
-# Vola API
-Sample API for the VOLA format. It contains a set of parsers to convert from
-LAZ/LAS, PLY, KITTI, PCD, STL and ASCII 3d models to vola. It also contains a
-reader (volareader.py) that allows the structure to be queried and output as
-images or voxel maps. There is also a viewer (volaviewer.py) that allows
-individual or multiple volumes to be viewed.
+# Volumetric Accelerator Toolkit
+A toolkit for experimenting with the volumetric Accelerator format.It contains 
+a set of parsers to convert from LAZ/LAS, PLY, KITTI, PCD, STL and ASCII 3d models to vola.
+It also contains areader (volareader.py) that allows the structure to be queried and output as
+images or voxel maps. There is also a viewer (volaviewer.py) that allows individual or 
+multiple volumes to be viewed.
 
 ## Installation
 
